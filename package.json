@@ -1,23 +1,16 @@
 {
-  "name": "bbs-plus-signatures",
+  "name": "bbs-plus-impl",
   "version": "1.0.0",
-  "description": "BBS+ signature implementation in Node.js",
+  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "noble-curves": "^1.4.0",
-    "noble-hashes": "^1.4.0"
-  },
-  "keywords": [
-    "bbs",
-    "signatures",
-    "cryptography",
-    "zero-knowledge"
-  ],
+  "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "ISC",
+  "dependencies": {
+    "@mattrglobal/bbs-signatures": "^1.2.0"
+  }
 }
