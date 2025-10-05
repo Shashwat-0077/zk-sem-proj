@@ -30,9 +30,10 @@ const main = async () => {
     // --- Step 4: Create and Verify a Selective Disclosure Proof ---
     console.log('--- BBS+ Implementation: Selective Disclosure Proof ---');
     // We want to reveal FirstName (index 0) and Nationality (index 3)
-    const revealedIndices = [2];
+    const revealedIndices = [0, 2];
     const revealedMessages = messages.filter((_, i) => revealedIndices.includes(i));
-    revealedMessages[0] = 'Age: 30';
+    revealedMessages[0] = 'FirstName: Alice';
+    revealedMessages[1] = 'Age: 25';
     console.log('Messages to be revealed:', revealedMessages);
 
     // A nonce is a random value used once to ensure the proof is unique and not subject to replay attacks.
