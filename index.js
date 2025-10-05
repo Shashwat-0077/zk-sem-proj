@@ -29,7 +29,6 @@ const main = async () => {
 
     // --- Step 4: Create and Verify a Selective Disclosure Proof ---
     console.log('--- BBS+ Implementation: Selective Disclosure Proof ---');
-    // We want to reveal FirstName (index 0) and Nationality (index 3)
     const revealedIndices = [0, 2];
     const revealedMessages = messages.filter((_, i) => revealedIndices.includes(i));
     revealedMessages[0] = 'FirstName: Alice';
@@ -65,8 +64,6 @@ const main = async () => {
     );
     console.log(`\nProof saved to ${proofPath}`);
 
-    // Now, a verifier would receive the proof, the revealed messages, and the nonce.
-    // Let's load them back and verify.
     const loadedProofData = JSON.parse(fs.readFileSync(proofPath, 'utf-8'));
     const loadedProof = fromHex(loadedProofData.proof);
     const loadedNonce = fromHex(loadedProofData.nonce);

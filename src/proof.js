@@ -1,5 +1,3 @@
-// src/proof.js
-
 import { blsCreateProof, blsVerifyProof } from '@mattrglobal/bbs-signatures';
 import { TextEncoder } from 'util';
 
@@ -9,7 +7,6 @@ export const createProof = async ({ publicKey, signature, messages, revealedIndi
     const encoder = new TextEncoder();
     const messagesAsBytes = messages.map((msg) => encoder.encode(msg));
 
-    // The blsCreateProof function generates the proof.
     const proof = await blsCreateProof({
         signature,
         publicKey,

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mattrglobal/bbs-signatures": "^1.2.0"
+    "@mattrglobal/bbs-signatures": "^1.2.0",
+    "mocha": "^11.7.4"
   }
 }

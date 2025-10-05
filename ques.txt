@@ -1,0 +1,2 @@
+why crating proof and checking with public key only
+why are revealing message , wont it be visible to everyone
