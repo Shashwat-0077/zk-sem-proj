@@ -2,8 +2,6 @@ import { blsCreateProof, blsVerifyProof } from '@mattrglobal/bbs-signatures';
 import { TextEncoder } from 'util';
 
 export const createProof = async ({ publicKey, signature, messages, revealedIndices, nonce }) => {
-    console.log('Creating a selective disclosure proof...');
-
     const encoder = new TextEncoder();
     const messagesAsBytes = messages.map((msg) => encoder.encode(msg));
 
@@ -15,13 +13,10 @@ export const createProof = async ({ publicKey, signature, messages, revealedIndi
         revealed: revealedIndices,
     });
 
-    console.log('Proof created successfully.');
     return proof;
 };
 
 export const verifyProof = async ({ proof, publicKey, messages, nonce }) => {
-    console.log('Verifying the selective disclosure proof...');
-
     const encoder = new TextEncoder();
     const messagesAsBytes = messages.map((msg) => encoder.encode(msg));
 
@@ -32,6 +27,5 @@ export const verifyProof = async ({ proof, publicKey, messages, nonce }) => {
         nonce,
     });
 
-    console.log('Proof verification complete.');
     return result;
 };
