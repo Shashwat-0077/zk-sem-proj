@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 15, "column": 0}, "map": {"version":3,"sources":["file:///home/shashwat/shashwat-stuff/niptao%20bas%20abb/zk-sem-proj/client/src/app/page.tsx"],"sourcesContent":["export default function Home() {\n    return <div>hellloooo</div>;\n}\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBAAO,8OAAC;kBAAI;;;;;;AAChB","debugId":null}}]
+}

@@ -13,6 +13,14 @@ export const createProof = async ({ publicKey, signature, messages, revealedIndi
         revealed: revealedIndices,
     });
 
+    // show some output in terminal
+    console.log('Proof created. Revealed indices:', revealedIndices);
+    try {
+        console.log('Proof (base64):', Buffer.from(proof).toString('base64'));
+    } catch (err) {
+        console.log('Proof:', proof);
+    }
+
     return proof;
 };
 

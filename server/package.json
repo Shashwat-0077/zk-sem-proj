@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "db:local": "turso dev --db-file ./drizzle/local-db.db",
+    "db:generate": "drizzle-kit generate",
+    "db:apply": "node scripts/migrate.js",
+    "db:studio": "drizzle-kit studio",
+    "db:reset": "rm -rf ./drizzle && bun db:generate && bun db:apply"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.15",
+    "@mattrglobal/bbs-signatures": "^2.0.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "4.4.3",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.6",
+    "express": "5.0.1",
+    "http-errors": "2.0.0",
+    "morgan": "1.10.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.5"
+  }
+}

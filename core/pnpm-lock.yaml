@@ -11,6 +11,9 @@ importers:
       '@mattrglobal/bbs-signatures':
         specifier: ^1.2.0
         version: 1.4.0
+      esm:
+        specifier: ^3.2.25
+        version: 3.2.25
       mocha:
         specifier: ^11.7.4
         version: 11.7.4
@@ -236,6 +239,10 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  esm@3.2.25:
+    resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
+    engines: {node: '>=6'}
 
   external-editor@3.1.0:
     resolution: {integrity: sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==}
@@ -975,6 +982,8 @@ snapshots:
     optional: true
 
   escape-string-regexp@4.0.0: {}
+
+  esm@3.2.25: {}
 
   external-editor@3.1.0:
     dependencies:

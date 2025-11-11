@@ -12,13 +12,17 @@ const fromHex = (hexString) => new Uint8Array(hexString.match(/.{1,2}/g).map((by
 
 const main = async () => {
     // --- Steps 1 & 2: Key Gen and Signing ---
+    const baseDir = '/home/shasha/shashwat-stuff/zk-sem-proj/core/';
+
     console.log('--- BBS+ Implementation: Key Generation & Signing ---');
     const keyPair = await generateBbsKeyPair();
-    const dataPath = path.resolve('data.json');
+    const dataPath = path.resolve(baseDir, 'data.json');
     const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
     const messages = Object.entries(data).map(([key, value]) => `${key}: ${value}`);
+
     const signature = await signMessages(keyPair, messages);
-    fs.writeFileSync('signature.hex', toHex(signature));
+    const signaturePath = path.resolve(baseDir, 'signature.hex');
+    fs.writeFileSync(signaturePath, toHex(signature));
     console.log('--- End of Key Generation & Signing ---\n');
 
     // --- Step 3: Full Verification (Optional, for completeness) ---
@@ -31,6 +35,7 @@ const main = async () => {
     console.log('--- BBS+ Implementation: Selective Disclosure Proof ---');
     const revealedIndices = [0, 2];
     const revealedMessages = messages.filter((_, i) => revealedIndices.includes(i));
+
     revealedMessages[0] = 'FirstName: Alice';
     revealedMessages[1] = 'Age: 25';
     console.log('Messages to be revealed:', revealedMessages);
@@ -39,6 +44,7 @@ const main = async () => {
     const nonce = crypto.randomBytes(16);
     console.log('Using Nonce (Hex):', toHex(nonce));
 
+    // messages[4] = 'GPA: 8.4';
     // Create the proof
     const proof = await createProof({
         publicKey: keyPair.publicKey,
@@ -49,7 +55,7 @@ const main = async () => {
     });
 
     // Save the proof to a file
-    const proofPath = path.resolve('proof.json');
+    const proofPath = path.resolve(baseDir, 'proof.json');
     fs.writeFileSync(
         proofPath,
         JSON.stringify(

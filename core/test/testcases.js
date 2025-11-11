@@ -1,10 +1,11 @@
-import { generateBbsKeyPair } from './src/keygen.js';
-import { signMessages } from './src/sign.js';
-import { verifySignature } from './src/verify.js';
-import { createProof, verifyProof } from './src/proof.js';
+// test/bbs.test.js
+import { generateBbsKeyPair } from '../src/keygen.js';
+import { signMessages } from '../src/sign.js';
+import { verifySignature } from '../src/verify.js';
+import { createProof, verifyProof } from '../src/proof.js';
 import crypto from 'crypto';
 import assert from 'assert';
-import { describe, it, before } from 'mocha';
+import { describe, it, before, after } from 'mocha';
 
 describe('BBS+ Signature and Proof Scheme', () => {
     const sampleMessages = [
@@ -16,13 +17,34 @@ describe('BBS+ Signature and Proof Scheme', () => {
     ];
 
     let keyPair;
+    const passedTests = [];
 
     before(async () => {
         // Generate a key pair once before any of the tests run.
         keyPair = await generateBbsKeyPair();
     });
 
-    it('Test Case 1: Should create a valid signature and verify it successfully', async () => {
+    after(() => {
+        console.log('\n\n✅ All Passed Tests Summary:');
+        if (passedTests.length === 0) {
+            console.log('⚠️  No tests passed (or Mocha failed early)');
+        } else {
+            for (const testName of passedTests) {
+                console.log(`- ${testName}`);
+            }
+        }
+        console.log('✅ Total Passed:', passedTests.length, '\n');
+    });
+
+    // Helper to wrap each test and record success
+    const wrapTest = (name, fn) => {
+        it(name, async function () {
+            await fn();
+            passedTests.push(name);
+        });
+    };
+
+    wrapTest('Test Case 1: Should create a valid signature and verify it successfully', async () => {
         console.log('Input Messages:', sampleMessages);
         const signature = await signMessages(keyPair, sampleMessages);
         console.log('Verification Data: Using original messages and public key.');
@@ -32,7 +54,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, true, 'Signature verification failed');
     });
 
-    it('Test Case 2: Should create and verify a valid selective disclosure proof', async () => {
+    wrapTest('Test Case 2: Should create and verify a valid selective disclosure proof', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const revealedIndices = [0, 2];
         const revealedMessages = sampleMessages.filter((_, i) => revealedIndices.includes(i));
@@ -54,7 +76,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, true, 'Proof verification failed');
     });
 
-    it('Test Case 3: Should fail to verify a signature if a message is tampered', async () => {
+    wrapTest('Test Case 3: Should fail to verify a signature if a message is tampered', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const tamperedMessages = [...sampleMessages];
         tamperedMessages[2] = 'Age: 26'; // Tamper the age
@@ -67,7 +89,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, false, 'Signature verification should have failed but passed');
     });
 
-    it('Test Case 4: Should fail to verify a proof if a revealed message is tampered', async () => {
+    wrapTest('Test Case 4: Should fail to verify a proof if a revealed message is tampered', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const revealedIndices = [0, 3];
         const revealedMessages = sampleMessages.filter((_, i) => revealedIndices.includes(i));
@@ -96,7 +118,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, false, 'Proof verification should have failed but passed');
     });
 
-    it('Test Case 5: Should fail to verify a signature with a different public key', async () => {
+    wrapTest('Test Case 5: Should fail to verify a signature with a different public key', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const anotherKeyPair = await generateBbsKeyPair();
 
@@ -112,7 +134,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         );
     });
 
-    it('Test Case 6: Should fail to verify a proof with a different public key', async () => {
+    wrapTest('Test Case 6: Should fail to verify a proof with a different public key', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const anotherKeyPair = await generateBbsKeyPair();
         const revealedIndices = [1, 4];
@@ -139,7 +161,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, false, 'Proof verification with wrong key should have failed but passed');
     });
 
-    it('Test Case 7: Should fail to verify a proof with a different nonce', async () => {
+    wrapTest('Test Case 7: Should fail to verify a proof with a different nonce', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const revealedIndices = [0, 2, 4];
         const revealedMessages = sampleMessages.filter((_, i) => revealedIndices.includes(i));
@@ -166,7 +188,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, false, 'Proof verification with wrong nonce should have failed but passed');
     });
 
-    it('Test Case 8: Should create a valid proof revealing NO messages', async () => {
+    wrapTest('Test Case 8: Should create a valid proof revealing NO messages', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const revealedIndices = [];
         const revealedMessages = [];
@@ -186,7 +208,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, true, 'Proof verification with zero revealed messages failed');
     });
 
-    it('Test Case 9: Should create a valid proof revealing ALL messages', async () => {
+    wrapTest('Test Case 9: Should create a valid proof revealing ALL messages', async () => {
         const signature = await signMessages(keyPair, sampleMessages);
         const revealedIndices = sampleMessages.map((_, i) => i);
         const revealedMessages = [...sampleMessages];
@@ -206,7 +228,7 @@ describe('BBS+ Signature and Proof Scheme', () => {
         assert.strictEqual(result.verified, true, 'Proof verification with all messages revealed failed');
     });
 
-    it('Test Case 10: Should successfully sign and verify a signature for a single message', async () => {
+    wrapTest('Test Case 10: Should successfully sign and verify a signature for a single message', async () => {
         const messages = ['This is a single message.'];
         console.log('Input Messages:', messages);
         const signature = await signMessages(keyPair, messages);
